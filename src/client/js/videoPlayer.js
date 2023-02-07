@@ -64,13 +64,6 @@ const handleTimeUpdate = () => {
   timeline.value = Math.floor(video.currentTime);
 };
 
-//비디오가 끝나면 play버튼으로 다시 되돌리기, 조회수 기록
-const handleEnded = () => {
-  const { id } = videoContainer.dataset;
-  fetch("/api/videos/" + id + "/view", {
-    method: "POST",
-  });
-};
 const handleTimelineChange = (event) => {
   const {
     target: { value },
@@ -106,12 +99,23 @@ const handleMouseMove = () => {
 const handleMouseLeave = () => {
   controlsTimeout = setTimeout(hideControls, 3000);
 };
+
 document.addEventListener("keyup", (event) => {
   if (event.code === "Space") {
     handlePlayClick();
     event.preventDefault();
   }
 });
+
+//비디오가 끝나면 play버튼으로 다시 되돌리기, 조회수 기록
+const handleEnded = () => {
+  const { id } = videoContainer.dataset;
+  fetch("/api/videos/" + id + "/view", {
+    method: "POST",
+  });
+  playBtnIcon.classList = "fas fa-play";
+  video.paused = video.pause();
+};
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMuteClick);
 volumeRange.addEventListener("input", handleVolumeChange);

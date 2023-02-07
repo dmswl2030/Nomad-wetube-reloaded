@@ -30,5 +30,11 @@ app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
 app.use("/api", apiRouter);
+//댓글에 달린 해결방법 참고
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+});
 
 export default app;
