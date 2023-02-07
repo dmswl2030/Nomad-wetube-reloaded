@@ -8,8 +8,8 @@
     "url": "git+https://github.com/dmswl2030/Nomad-wetube-reloaded.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/init.js",
-    "assets": "webpack --config webpack.config.js"
+    "dev:server": "nodemon",
+    "dev:assets": "webpack"
   },
   "author": "",
   "license": "ISC",
