@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
+import flash from "express-flash";
 import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
@@ -23,6 +24,7 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
   })
 );
+app.use(flash());
 app.use(localsMiddleware);
 //댓글에 달린 해결방법 참고
 app.use((req, res, next) => {
@@ -36,6 +38,5 @@ app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
 app.use("/api", apiRouter);
-
 
 export default app;

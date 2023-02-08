@@ -1,0 +1,14 @@
+[
+  {
+    "color": "red",
+    "type": "fox",
+    "size": "big",
+    "name": "가엘"
+  },
+  {
+    "color": "white",
+    "type": "dog",
+    "size": "big",
+    "name": "오구"
+  }
+]
