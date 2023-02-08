@@ -19,7 +19,9 @@ export const watch = async (req, res) => {
 
 export const getEdit = async (req, res) => {
   const { id } = req.params;
-  const {user: { _id },} = req.session;
+  const {
+    user: { _id },
+  } = req.session;
   const video = await Video.findById(id);
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video not found." });
@@ -32,7 +34,9 @@ export const getEdit = async (req, res) => {
 
 export const postEdit = async (req, res) => {
   const { id } = req.params;
-  const {user: { _id },} = req.session;
+  const {
+    user: { _id },
+  } = req.session;
   const { title, description, hashtags } = req.body;
   const video = await Video.exists({ _id: id });
   if (!video) {
@@ -54,14 +58,18 @@ export const getUpload = (req, res) => {
 };
 
 export const postUpload = async (req, res) => {
-  const { user: { _id }, } = req.session;
-  const { path: fileUrl } = req.file;
+  const {
+    user: { _id },
+  } = req.session;
+  const { video, thumb } = req.files;
+  console.log(video, thumb);
   const { title, description, hashtags } = req.body;
   try {
     const newVideo = await Video.create({
       title,
       description,
-      fileUrl,
+      fileUrl: video[0].path,
+      thumbUrl: thumb[0].path,
       owner: _id,
       hashtags: Video.formatHashtags(hashtags),
     });
@@ -80,7 +88,9 @@ export const postUpload = async (req, res) => {
 
 export const deleteVideo = async (req, res) => {
   const { id } = req.params;
-  const {user: { _id },} = req.session;
+  const {
+    user: { _id },
+  } = req.session;
   const video = await Video.findById(id);
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video not found." });
@@ -104,7 +114,6 @@ export const search = async (req, res) => {
   }
   return res.render("search", { pageTitle: "Search", videos });
 };
-
 
 export const registerView = async (req, res) => {
   const { id } = req.params;
