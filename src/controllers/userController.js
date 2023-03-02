@@ -134,8 +134,12 @@ export const finishGithubLogin = async (req, res) => {
 };
 
 export const logout = (req, res) => {
+  // logout error 수정
+  req.session.loggedIn = false;
+  req.session.user = null;
+
+  req.flash("info", "bye bye");
   req.session.destroy();
-  req.flash("info", "Bye Bye");
   return res.redirect("/");
 };
 
