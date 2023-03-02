@@ -132,7 +132,7 @@ export const finishGithubLogin = async (req, res) => {
     return res.redirect("/login");
   }
 };
-
+export const remove = (req, res) => res.send("Delete User");
 export const logout = (req, res) => {
   // logout error 수정
   req.session.loggedIn = false;
