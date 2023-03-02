@@ -132,17 +132,6 @@ export const finishGithubLogin = async (req, res) => {
     return res.redirect("/login");
   }
 };
-export const remove = (req, res) => res.send("Delete User");
-export const logout = (req, res) => {
-  // logout error 수정
-  req.session.loggedIn = false;
-  req.session.user = null;
-
-  req.flash("info", "bye bye");
-  req.session.destroy();
-  return res.redirect("/");
-};
-
 export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
@@ -202,7 +191,15 @@ export const postChangePassword = async (req, res) => {
   req.flash("info", "Password updated");
   return res.redirect("/users/logout");
 };
-
+export const remove = (req, res) => res.send("Delete User");
+export const logout = (req, res) => {
+  // logout error 수정
+  req.session.loggedIn = false;
+  req.session.user = null;
+  req.flash("info", "bye bye");
+  req.session.destroy();
+  return res.redirect("/");
+};
 export const see = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id).populate({
