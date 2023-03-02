@@ -196,8 +196,8 @@ export const logout = (req, res) => {
   // logout error 수정
   req.session.loggedIn = false;
   req.session.user = null;
+  // req.session.destroy();
   req.flash("info", "bye bye");
-  req.session.destroy();
   return res.redirect("/");
 };
 export const see = async (req, res) => {
