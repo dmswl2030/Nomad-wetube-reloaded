@@ -193,10 +193,10 @@ export const postChangePassword = async (req, res) => {
 };
 export const remove = (req, res) => res.send("Delete User");
 export const logout = (req, res) => {
-  // logout error 수정
+  // logout error 수정 - 아직못함
   req.session.loggedIn = false;
   req.session.user = null;
-  // req.session.destroy();
+  req.session.destroy();
   req.flash("info", "bye bye");
   return res.redirect("/");
 };

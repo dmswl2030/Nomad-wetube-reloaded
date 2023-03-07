@@ -48,20 +48,18 @@ const handleSubmit = async (event) => {
   }
 };
 
-const handleDelete = async (event) => {
-  const commentId = event.target.dataset.id;
-
-  const response = await fetch(`/api/comments/${commentId}`, {
-    method: "DELETE",
-  });
-
-  if (response.status === 200) {
-    deleteComment(event.target.parentNode);
-  }
-};
 if (form) {
   form.addEventListener("submit", handleSubmit);
 }
+
+const handleDelete = async (event) => {
+  event.preventDefault();
+  const commentId = event.target.parentNode.dataset.id;
+  await fetch(`/api/comment/${commentId}/delete`, {
+    method: "DELETE",
+  });
+  event.target.parentNode.remove();
+};
 
 deleteBtn.forEach((elm) => elm.addEventListener("click", handleDelete));
 

@@ -6,7 +6,16 @@ header {
   .header__logo {
     color: $red;
     font-size: 38px;
+    display: flex;
+    align-items: center;
+    span {
+      font-size: 25px;
+      font-weight: 500;
+      margin-left: 5px;
+      color: white;
+    }
   }
+
   ul {
     display: flex;
     justify-content: space-between;
