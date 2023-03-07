@@ -54,8 +54,8 @@ block content
                 li.video__comment(data-id=comment.id)
                     i.fas.fa-comment
                     span #{comment.text}
-                if String(comment.owner._id) === String(loggedInUser._id) 
-                    span.video__comment-delete(style="cursor:pointer",data-id=comment.id)
+                    if String(comment.owner._id) == String(loggedInUser._id) 
+                        span.video__comment-delete(style="cursor:pointer",data-id=comment.id) del
 block scripts
     script(src="/static/js/videoPlayer.js")
     if loggedIn
