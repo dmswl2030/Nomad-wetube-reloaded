@@ -1,7 +1,7 @@
 extends base
 block content
     div#videoContainer(data-id=video._id)
-        video(src="/" + video.fileUrl)
+        video(src=video.fileUrl, crossorigin)
         div#videoControls.videoControls
             div.videoControls__play
                 span#play.videoControls__playBtn
@@ -31,7 +31,7 @@ block content
         small.video__owner 
             div.video__owner-img
                 if `${(video.owner.avatarUrl).substring(0,4)}` === "http"
-                    img.video__owner__avatar(src=video.owner.avatarUrl, crossorigin)
+                    img.video__owner__avatar(src=video.owner.avatarUrl)
                 else 
                     img.video__owner__avatar(src="/" + video.owner.avatarUrl, crossorigin)
             div.video__owner__link
@@ -50,12 +50,20 @@ block content
                 button 완료
     div.video__comments
         ul
-            each comment in video.comments.reverse()
+            each comment in comments.reverse()
                 li.video__comment(data-id=comment.id)
-                    i.fas.fa-comment
-                    span #{comment.text}
+                    div.video__comment-area
+                        div.video__comment__owner-img
+                            if `${(comment.owner.avatarUrl).substring(0,4)}` === "http"
+                                img(src=comment.owner.avatarUrl)
+                            else 
+                                img(src="/" + comment.owner.avatarUrl, crossorigin)
+                        div.video__comment-info
+                            a.video__comment__owner-name(href=`/users/${comment.owner._id}`)
+                                span #{comment.owner.name}
+                            span #{comment.text}
                     if String(comment.owner._id) == String(loggedInUser._id) 
-                        span.video__comment-delete(style="cursor:pointer",data-id=comment.id) del
+                        span.video__comment-delete(data-id=comment.id) 삭제
 block scripts
     script(src="/static/js/videoPlayer.js")
     if loggedIn

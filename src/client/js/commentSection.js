@@ -2,23 +2,53 @@ const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
 const deleteBtn = document.querySelectorAll(".video__comment-delete");
 
-const addComment = (text, id) => {
+const addComment = (text, id, owner) => {
   const videoComments = document.querySelector(".video__comments ul");
   const newComment = document.createElement("li");
   newComment.dataset.id = id;
   newComment.className = "video__comment";
-  const icon = document.createElement("i");
-  icon.className = "fas fa-comment";
+  const commentArea = document.createElement("div");
+  commentArea.className = "video__comment-area";
+
+  //ownerImg추가
+  const ownerImg = document.createElement("div");
+  ownerImg.className = "video__comment__owner-img";
+  const img = document.createElement("img");
+  if (owner.avatarUrl.substring(0, 4) === "http") {
+    img.src = owner.avatarUrl;
+  } else {
+    img.src = "/" + owner.avatarUrl;
+  }
+
+  //info div 추가
+  const info = document.createElement("div");
+  info.className = "video__comment-info";
+  //ownerName 추가
+  const ownerName = document.createElement("a");
+  ownerName.href = `/users/${owner._id}`;
+  ownerName.className = "video__comment__owner-name";
+  const ownerNameSpan = document.createElement("span");
+  ownerNameSpan.innerText = `${owner.name}`;
+
+  //text 추가
   const span = document.createElement("span");
   span.innerText = ` ${text}`;
-  const span2 = document.createElement("span");
-  span2.innerText = ` ❌`;
-  span2.style = "cursor:pointer";
-  span2.dataset.id = id;
-  span2.addEventListener("click", handleDelete);
-  newComment.appendChild(icon);
-  newComment.appendChild(span);
-  newComment.appendChild(span2);
+  //remove 추가
+  const remove = document.createElement("span");
+  remove.className = "video__comment-delete";
+  remove.innerText = "삭제";
+  remove.dataset.id = id;
+  remove.addEventListener("click", handleDelete);
+
+  newComment.appendChild(commentArea);
+  commentArea.appendChild(ownerImg);
+  commentArea.appendChild(info);
+
+  ownerImg.appendChild(img);
+  info.appendChild(ownerName);
+  ownerName.appendChild(ownerNameSpan);
+  info.appendChild(span);
+  newComment.appendChild(remove);
   videoComments.prepend(newComment);
 };
 
@@ -39,8 +69,8 @@ const handleSubmit = async (event) => {
   });
   if (response.status === 201) {
     textarea.value = "";
-    const { newCommentId } = await response.json();
-    addComment(text, newCommentId);
+    const { newCommentId, owner } = await response.json();
+    addComment(text, newCommentId, owner);
   }
 };
 
@@ -59,8 +89,3 @@ const handleDelete = async (event) => {
 };
 
 deleteBtn.forEach((elm) => elm.addEventListener("click", handleDelete));
-
-// 230223 comment chellenge
-// 댓글 삭제 기능 추가
-// ❌버튼에 이벤트 리스터를 추가 한다.
-// 버튼 클릭 시 html 삭제

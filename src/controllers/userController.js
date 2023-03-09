@@ -143,11 +143,11 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
     file,
   } = req;
-  console.log(file);
+  const isHeroku = process.env.NODE_ENV === "production";
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
-      avatarUrl: file ? file.path : avatarUrl,
+      avatarUrl: file ? (isHeroku ? file.location : file.path) : avatarUrl,
       name,
       email,
       username,
@@ -192,12 +192,12 @@ export const postChangePassword = async (req, res) => {
   return res.redirect("/users/logout");
 };
 export const remove = (req, res) => res.send("Delete User");
+
+//error 수정 - req.flash() requires sessions
 export const logout = (req, res) => {
-  // logout error 수정 - 아직못함
-  req.session.loggedIn = false;
   req.session.user = null;
-  req.session.destroy();
-  req.flash("info", "bye bye");
+  req.session.loggedIn = false;
+  req.flash("info", "Bye Bye");
   return res.redirect("/");
 };
 export const see = async (req, res) => {

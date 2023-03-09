@@ -27,12 +27,22 @@ app.use(
 );
 app.use(flash());
 app.use(localsMiddleware);
-//댓글에 달린 해결방법 참고
 app.use((req, res, next) => {
-  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Cross-Origin-Embedder-Policy", "credentialless");
   res.header("Cross-Origin-Opener-Policy", "same-origin");
   next();
 });
+//댓글에 달린 해결방법 참고
+// app.use((req, res, next) => {
+//   res.header("Cross-Origin-Embedder-Policy", "require-corp");
+//   res.header("Cross-Origin-Opener-Policy", "same-origin");
+//   next();
+// });
 app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("assets"));
 app.use("/", rootRouter);
