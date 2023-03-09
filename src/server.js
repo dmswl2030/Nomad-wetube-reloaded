@@ -44,6 +44,7 @@ app.use((req, res, next) => {
 //   next();
 // });
 app.use("/uploads", express.static("uploads"));
+app.use("/videos/uploads", express.static("uploads"));
 app.use("/static", express.static("assets"));
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
