@@ -55,9 +55,18 @@ block content
         ul
             each comment in video.comments.reverse()
                 li.video__comment(data-id=comment.id)
-                    i.fas.fa-comment
-                    span  #{comment.text}
-                    span ❌
+                    div.video__comment-area
+                        div.video__comment__owner-img
+                            if `${(comment.owner.avatarUrl).substring(0,4)}` === "http"
+                                img(src=comment.owner.avatarUrl)
+                            else 
+                                img(src="/" + comment.owner.avatarUrl, crossorigin)
+                        div.video__comment-info
+                            a.video__comment__owner-name(href=`/users/${comment.owner._id}`)
+                                span #{comment.owner.name}
+                            span #{comment.text}
+                    if String(comment.owner._id) == String(loggedInUser._id) 
+                        span.video__comment-delete(data-id=comment.id) 삭제
             else
                 span No Comments found.
 block scripts
