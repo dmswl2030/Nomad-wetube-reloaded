@@ -14,7 +14,6 @@ const addComment = (text, id, owner) => {
   const ownerImg = document.createElement("div");
   ownerImg.className = "video__comment__owner-img";
   const img = document.createElement("img");
-  img.src = "/" + owner.avatarUrl;
   // if (owner.avatarUrl.substring(0, 4) === "http") {
   //   img.src = owner.avatarUrl;
   // } else {
