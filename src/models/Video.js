@@ -14,12 +14,14 @@ const videoSchema = new mongoose.Schema({
     { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Comment" },
   ],
   owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
-}); //비디오의 형식 정의
+});
 
 videoSchema.static("formatHashtags", function (hashtags) {
   return hashtags
     .split(",")
     .map((word) => (word.startsWith("#") ? word : `#${word}`));
 });
+
 const Video = mongoose.model("Video", videoSchema);
+
 export default Video;
