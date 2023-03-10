@@ -150,27 +150,24 @@ export const createComment = async (req, res) => {
     video: id,
   });
   const owner = await User.findById(comment.owner);
+
   owner.comments.push(comment._id);
   owner.save();
   video.comments.push(comment._id);
   video.save();
-  return res.status(201).json({ newCommentId: comment._id, owner });
+
+  return res.status(201).json({ newCommentId: comment._i, owner });
 };
 
 export const deleteComment = async (req, res) => {
+  const { id } = req.params;
   const {
     user: { _id },
   } = req.session;
-  const {
-    params: { id },
-  } = req;
-
-  const comment = await Comment.findByIdAndDelete(id);
+  const comment = await Comment.findById(id);
   if (!comment) {
     return res.sendStatus(404);
   }
-  if (String(comment.owner) !== String(_id)) {
-    return res.sendStatus(403);
-  }
-  return res.sendStatus(201);
+  await Comment.findByIdAndDelete(id);
+  return res.sendStatus(200);
 };
