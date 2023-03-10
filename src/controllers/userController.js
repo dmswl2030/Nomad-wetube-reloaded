@@ -5,7 +5,6 @@ import bcrypt from "bcrypt";
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
   const { name, username, email, password, password2, location } = req.body;
-  console.log(req.body);
   const pageTitle = "Join";
   if (password !== password2) {
     return res.status(400).render("join", {
@@ -14,7 +13,6 @@ export const postJoin = async (req, res) => {
     });
   }
   const exists = await User.exists({ $or: [{ username }, { email }] });
-  console.log(exists);
   if (exists) {
     return res.status(400).render("join", {
       pageTitle,
@@ -61,6 +59,7 @@ export const postLogin = async (req, res) => {
   req.session.user = user;
   return res.redirect("/");
 };
+
 export const startGithubLogin = (req, res) => {
   const baseUrl = "https://github.com/login/oauth/authorize";
   const config = {
@@ -111,6 +110,7 @@ export const finishGithubLogin = async (req, res) => {
       (email) => email.primary === true && email.verified === true
     );
     if (!emailObj) {
+      // set notification
       return res.redirect("/login");
     }
     let user = await User.findOne({ email: emailObj.email });
@@ -132,6 +132,12 @@ export const finishGithubLogin = async (req, res) => {
     return res.redirect("/login");
   }
 };
+
+export const logout = (req, res) => {
+  req.session.destroy();
+  req.flash("info", "Bye Bye");
+  return res.redirect("/");
+};
 export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
@@ -143,7 +149,6 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
     file,
   } = req;
-  console.log(file);
   const isHeroku = process.env.NODE_ENV === "production";
   const updatedUser = await User.findByIdAndUpdate(
     _id,
@@ -159,6 +164,7 @@ export const postEdit = async (req, res) => {
   req.session.user = updatedUser;
   return res.redirect("/users/edit");
 };
+
 export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly === true) {
     req.flash("error", "Can't change password.");
@@ -192,15 +198,7 @@ export const postChangePassword = async (req, res) => {
   req.flash("info", "Password updated");
   return res.redirect("/users/logout");
 };
-export const remove = (req, res) => res.send("Delete User");
 
-//error 수정 - req.flash() requires sessions
-export const logout = (req, res) => {
-  req.session.user = null;
-  req.session.loggedIn = false;
-  req.flash("info", "Bye Bye");
-  return res.redirect("/");
-};
 export const see = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id).populate({

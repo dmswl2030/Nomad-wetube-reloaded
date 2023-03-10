@@ -12,12 +12,10 @@ export const home = async (req, res) => {
 export const watch = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id).populate("owner").populate("comments");
-  const comments = await Comment.find({ video: id }).populate("owner");
-  console.log(comments.owner);
   if (!video) {
     return res.render("404", { pageTitle: "Video not found." });
   }
-  return res.render("watch", { pageTitle: video.title, video, comments });
+  return res.render("watch", { pageTitle: video.title, video });
 };
 
 export const getEdit = async (req, res) => {
@@ -33,14 +31,14 @@ export const getEdit = async (req, res) => {
     req.flash("error", "Not authorized");
     return res.status(403).redirect("/");
   }
-  return res.render("edit", { pageTitle: `Edit ${video.title}`, video });
+  return res.render("edit", { pageTitle: `Edit: ${video.title}`, video });
 };
 
 export const postEdit = async (req, res) => {
-  const { id } = req.params;
   const {
     user: { _id },
   } = req.session;
+  const { id } = req.params;
   const { title, description, hashtags } = req.body;
   const video = await Video.exists({ _id: id });
   if (!video) {
@@ -75,7 +73,7 @@ export const postUpload = async (req, res) => {
       title,
       description,
       fileUrl: isHeroku ? video[0].location : video[0].path,
-      thumbUrl: isHeroku ? thumb[0].location : thumb[0].path,
+      thumbUrl: isHeroku ? thumb[0].location : video[0].path,
       owner: _id,
       hashtags: Video.formatHashtags(hashtags),
     });
@@ -84,6 +82,7 @@ export const postUpload = async (req, res) => {
     user.save();
     return res.redirect("/");
   } catch (error) {
+    console.log(error);
     return res.status(400).render("upload", {
       pageTitle: "Upload Video",
       errorMessage: error._message,
@@ -133,9 +132,7 @@ export const registerView = async (req, res) => {
 
 export const createComment = async (req, res) => {
   const {
-    session: {
-      user: { _id },
-    },
+    session: { user },
     body: { text },
     params: { id },
   } = req;
@@ -145,32 +142,10 @@ export const createComment = async (req, res) => {
   }
   const comment = await Comment.create({
     text,
-    owner: _id,
+    owner: user._id,
     video: id,
   });
-  const owner = await User.findById(comment.owner);
-
-  owner.comments.push(comment._id);
-  owner.save();
   video.comments.push(comment._id);
   video.save();
-
-  return res.status(201).json({ newCommentId: comment._i, owner });
-};
-
-export const deleteComment = async (req, res) => {
-  const { id } = req.params;
-  const {
-    user: { _id },
-  } = req.session;
-
-  const comment = await Comment.findById(id);
-
-  if (!comment) {
-    return res.sendStatus(404);
-  }
-
-  await Comment.findByIdAndDelete(id);
-
-  return res.sendStatus(200);
+  return res.status(201).json({ newCommentId: comment._id });
 };
