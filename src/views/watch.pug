@@ -32,11 +32,10 @@ block content
         br
         small.video__owner 
             div.video__owner-img
-                span #{video.owner.avatarUrl}
                 if `${(video.owner.avatarUrl).substring(0,4)}` === "http"
                     img.video__owner__avatar(src=video.owner.avatarUrl)
                 else 
-                    img.video__owner__avatar(src="/" + video.owner.avatarUrl, crossorigin)
+                    img.video__owner__avatar(src="/" + video.owner.avatarUrl)
             div.video__owner__link
                 a(href=`/users/${video.owner._id}`)=video.owner.name
                 div.video__description-area
