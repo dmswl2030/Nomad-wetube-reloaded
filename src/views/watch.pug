@@ -41,6 +41,8 @@ block content
                     i.fas.fa-comment
                     span  #{comment.text}
                     span ❌
+            else
+                span No Comments found.
 block scripts
     script(src="/static/js/videoPlayer.js")
     if loggedIn
