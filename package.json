@@ -2,7 +2,6 @@
   "name": "nomad-wetube",
   "version": "1.0.0",
   "description": "The best way to watch videos.",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dmswl2030/Nomad-wetube-reloaded.git"
