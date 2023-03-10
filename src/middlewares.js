@@ -1,9 +1,8 @@
 import multer from "multer";
 import multerS3 from "multer-s3";
-import { S3Client } from "@aws-sdk/client-s3";
+import aws from "aws-sdk";
 
-const s3 = new S3Client({
-  region: "us-east-2",
+const s3 = new aws.S3({
   credentials: {
     accessKeyId: process.env.AWS_ID,
     secretAccessKey: process.env.AWS_SECRET,
@@ -60,7 +59,7 @@ export const avatarUpload = multer({
 export const videoUpload = multer({
   dest: "uploads/videos/",
   limits: {
-    fileSize: 100000000,
+    fileSize: 90000000,
   },
   storage: isHeroku ? s3VideoUploader : undefined,
 });
