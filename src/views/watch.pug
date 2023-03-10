@@ -32,10 +32,11 @@ block content
         br
         small.video__owner 
             div.video__owner-img
-                //- if `${(video.owner.avatarUrl).substring(0,4)}` === "http"
-                //-     img.video__owner__avatar(src=video.owner.avatarUrl)
-                //- else 
-                //-     img.video__owner__avatar(src="/" + video.owner.avatarUrl, crossorigin)
+                span #{video.owner.avatarUrl}
+                if `${(video.owner.avatarUrl).substring(0,4)}` === "http"
+                    img.video__owner__avatar(src=video.owner.avatarUrl)
+                else 
+                    img.video__owner__avatar(src="/" + video.owner.avatarUrl, crossorigin)
             div.video__owner__link
                 a(href=`/users/${video.owner._id}`)=video.owner.name
                 div.video__description-area
