@@ -1,4 +1,5 @@
 extends base
+
 block content
     div#videoContainer(data-id=video._id)
         video(src=video.fileUrl)
@@ -18,53 +19,29 @@ block content
             div
                 span#fullScreen
                     i.fas.fa-expand
+
     div.video__data
-        div.video__hashtags
-            each hashtag in video.hashtags
-                    span=hashtag
-                    span=" "
         p.video__title=video.title
-        div
-            span.video__views #{video.meta.views} 회 •
-            span.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
-        br
-        small.video__owner 
-            div.video__owner-img
-                if `${(video.owner.avatarUrl).substring(0,4)}` === "http"
-                    img.video__owner__avatar(src=video.owner.avatarUrl)
-                else 
-                    img.video__owner__avatar(src="/" + video.owner.avatarUrl, crossorigin)
-            div.video__owner__link
-                a(href=`/users/${video.owner._id}`)=video.owner.name
-                div.video__description-area
-                    small.video__description
-                    span=video.description
-        br
+        small.video__owner Uploaded by 
+            a(href=`/users/${video.owner._id}`)=video.owner.name
+        small.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
         if String(video.owner._id) === String(loggedInUser._id)
             a(href=`${video.id}/edit`) Edit Video &rarr;
+            br
             a(href=`${video.id}/delete`) Delete Video &rarr;
     if loggedIn
         div.video__add-comments
             form.video__comment-form#commentForm
-                textarea(placeholder="댓글 추가하기")
-                button 완료
+                textarea(cols="30", rows="10", placeholder="Write a nice commment...")
+                button Add Comment
     div.video__comments
         ul
-            each comment in comments.reverse()
+            each comment in video.comments.reverse()
                 li.video__comment(data-id=comment.id)
-                    div.video__comment-area
-                        div.video__comment__owner-img
-                            if `${(comment.owner.avatarUrl).substring(0,4)}` === "http"
-                                img(src=comment.owner.avatarUrl)
-                            else 
-                                img(src="/" + comment.owner.avatarUrl, crossorigin)
-                        div.video__comment-info
-                            a.video__comment__owner-name(href=`/users/${comment.owner._id}`)
-                                span #{comment.owner.name}
-                            span #{comment.text}
-                    if String(comment.owner._id) == String(loggedInUser._id) 
-                        span.video__comment-delete(data-id=comment.id) 삭제
+                    i.fas.fa-comment
+                    span  #{comment.text}
+                    span ❌
 block scripts
     script(src="/static/js/videoPlayer.js")
     if loggedIn
-        script(src="/static/js/commentSection.js")
+        script(src="/static/js/commentSection.js") 
