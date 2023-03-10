@@ -5,7 +5,7 @@ const videoSchema = new mongoose.Schema({
   fileUrl: { type: String, required: true },
   thumbUrl: { type: String, required: true },
   description: { type: String, required: true, trim: true, minLength: 20 },
-  createdAt: { type: Date, required: true, default: Date.now },
+  createdAt: { type: Date, required: true, default: Date.now() },
   hashtags: [{ type: String, trim: true }],
   meta: {
     views: { type: Number, default: 0, required: true },
@@ -20,6 +20,6 @@ videoSchema.static("formatHashtags", function (hashtags) {
     .map((word) => (word.startsWith("#") ? word : `#${word}`));
 });
 
-const video = mongoose.model("Video", videoSchema);
+const Video = mongoose.model("Video", videoSchema);
 
-export default video;
+export default Video;
