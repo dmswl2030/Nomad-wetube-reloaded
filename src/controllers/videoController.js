@@ -80,7 +80,7 @@ export const postUpload = async (req, res) => {
     const user = await User.findById(_id);
     user.videos.push(newVideo._id);
     user.save();
-    return res.redirect("/");
+    return res.send(req.files);
   } catch (error) {
     console.log(error);
     return res.send(req.files);
