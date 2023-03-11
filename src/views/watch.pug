@@ -57,7 +57,7 @@ block content
                 li.video__comment(data-id=comment.id)
                     div.video__comment-area
                         div.video__comment__owner-img
-                            img(src="/" + comment.owner.avatarUrl, crossorigin)
+                            img(src=comment.owner.avatarUrl, crossorigin)
                             //- if `${(comment.owner.avatarUrl).substring(0,4)}` === "http"
                             //-     img(src=comment.owner.avatarUrl)
                             //- else 
