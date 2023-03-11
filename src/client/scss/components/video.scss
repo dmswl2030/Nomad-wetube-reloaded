@@ -22,9 +22,9 @@
     .video-mixin__info {
       margin-left: 10px;
       width: 90%;
+      height: 40px;
       .video-mixin__title {
         font-size: 18px;
-        margin-top: 10px;
         //타이틀 2줄이상 말줄임 추가
         white-space: normal;
         display: -webkit-box;
