@@ -8,6 +8,11 @@ header {
     font-size: 38px;
     display: flex;
     align-items: center;
+    .header__logo-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+    }
     span {
       font-size: 25px;
       font-weight: 500;
