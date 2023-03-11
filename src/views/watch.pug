@@ -53,15 +53,14 @@ block content
                 button 완료
     div.video__comments
         ul
-            each comment in video.comments.reverse()
+            each comment in comments.reverse()
                 li.video__comment(data-id=comment.id)
                     div.video__comment-area
                         div.video__comment__owner-img
-                            img(src=comment.owner.avatarUrl)
-                            //- if `${(comment.owner.avatarUrl).substring(0,4)}` === "http"
-                            //-     img(src=comment.owner.avatarUrl)
-                            //- else 
-                            //-     img(src="/" + comment.owner.avatarUrl, crossorigin)
+                            if `${(comment.owner.avatarUrl).substring(0,4)}` === "http"
+                                img(src=comment.owner.avatarUrl)
+                            else 
+                                img(src="/" + comment.owner.avatarUrl, crossorigin)
                         div.video__comment-info
                             a.video__comment__owner-name(href=`/users/${comment.owner._id}`)
                                 span #{comment.owner.name}
